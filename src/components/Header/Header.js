@@ -2,16 +2,18 @@ import React from "react";
 import "./Header.css";
 import SearchIcon from "@mui/icons-material/Search";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useStateValue } from "../../store/StateProvider";
 import { auth } from "../../firebase";
 
 function Header() {
   const [{ basket, user }, dispatch] = useStateValue();
+  const navigate = useNavigate();
 
   const handleAuth = () => {
     if (user) {
       auth.signOut();
+      navigate("/");
     }
   };
 
