@@ -8,6 +8,7 @@ import Header from "./components/Header/Header";
 import Home from "./components/Home/Home";
 import Checkout from "./components/Checkout/Checkout";
 import Login from "./components/Login/Login";
+import Payment from "./components/Payment/Payment";
 
 function App() {
   const [_, dispatch] = useStateValue();
@@ -26,6 +27,7 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Routes>
+          <Route path="/payment" element={[<Header />, <Payment />]} />
           <Route path="/login" element={<Login />} />
           <Route path="/checkout" element={[<Header />, <Checkout />]} />
           <Route path="/" element={[<Header />, <Home />]} />
