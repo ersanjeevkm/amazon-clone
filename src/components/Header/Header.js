@@ -12,8 +12,9 @@ function Header() {
 
   const handleAuth = () => {
     if (user) {
-      auth.signOut();
-      navigate("/");
+      auth.signOut().then(() => {
+        navigate("/");
+      });
     }
   };
 
