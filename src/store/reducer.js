@@ -1,5 +1,7 @@
+const initBasket = JSON.parse(localStorage?.getItem("basket"));
+
 export const initialState = {
-  basket: [],
+  basket: initBasket ? initBasket : [],
   user: null,
 };
 
@@ -27,6 +29,13 @@ const reducer = (state, action) => {
         ...state,
         user: action.user,
       };
+
+    case "EMPTY_BASKET":
+      return {
+        ...state,
+        basket: [],
+      };
+
     default:
       return state;
   }

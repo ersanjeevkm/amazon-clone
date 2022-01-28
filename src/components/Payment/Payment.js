@@ -7,6 +7,8 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import CurrencyFormat from "react-currency-format";
 import { getBasketTotal } from "../../store/reducer";
 import axios from "./axios";
+import db from "../../firebase";
+import { doc, setDoc } from "firebase/firestore";
 
 function Payment() {
   const navigate = useNavigate();
@@ -47,9 +49,23 @@ function Payment() {
         },
       })
       .then(({ paymentIntent }) => {
+        const ref = doc(db, "users", user?.uid, "orders", paymentIntent.id);
+        setDoc(ref, {
+          basket: basket,
+          amount: paymentIntent.amount,
+          created: paymentIntent.created,
+        });
+
         setSucceeded(true);
         setError(null);
         setProcessing(false);
+
+        dispatch({
+          type: "EMPTY_BASKET",
+        });
+
+        localStorage.removeItem("basket");
+
         navigate("/orders", { replace: true });
       });
   };

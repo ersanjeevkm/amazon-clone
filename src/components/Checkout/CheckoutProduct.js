@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./CheckoutProduct.css";
 import { useStateValue } from "../../store/StateProvider";
 
-function CheckoutProduct({ index, id, image, price, rating, title }) {
-  const [_, dispatch] = useStateValue();
+function CheckoutProduct({ index, id, image, price, rating, title, hideBtn }) {
+  const [{ basket }, dispatch] = useStateValue();
+
+  useEffect(() => {
+    localStorage.setItem("basket", JSON.stringify(basket));
+  }, [basket]);
 
   const removeFromBasket = () => {
     dispatch({ type: "REMOVE_FROM_BASKET", index: index });
@@ -26,7 +30,9 @@ function CheckoutProduct({ index, id, image, price, rating, title }) {
               <p>⭐</p>
             ))}
         </div>
-        <button onClick={removeFromBasket}>Remove from Basket</button>
+        {!hideBtn && (
+          <button onClick={removeFromBasket}>Remove from Basket</button>
+        )}
       </div>
     </div>
   );
