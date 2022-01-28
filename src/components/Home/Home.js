@@ -20,7 +20,27 @@ function Home() {
     });
   }, []);
 
-  console.log(prod);
+  const products = prod
+    .map(({ data }) => (
+      <Product
+        id={data.id}
+        title={data.title}
+        price={data.price}
+        rating={data.rating}
+        image={data.image}
+      />
+    ))
+    .reduce(function (r, element, index) {
+      // create element groups with size 3, result looks like:
+      // [[elem1, elem2, elem3], [elem4, elem5, elem6], ...]
+      index % 3 === 0 && r.push([]);
+      r[r.length - 1].push(element);
+      return r;
+    }, [])
+    .map(function (rowContent) {
+      // surround every group with 'row'
+      return <div className="home_row">{rowContent}</div>;
+    });
 
   return (
     <div className="home">
@@ -31,18 +51,7 @@ function Home() {
           alt=""
         />
 
-        {prod &&
-          prod.map(({ data }) => (
-            <div className="home_row">
-              <Product
-                id={data.id}
-                title={data.title}
-                price={data.price}
-                rating={data.rating}
-                image={data.image}
-              />
-            </div>
-          ))}
+        {prod && products}
       </div>
     </div>
   );
